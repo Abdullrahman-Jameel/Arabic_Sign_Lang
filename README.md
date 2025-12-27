@@ -25,7 +25,13 @@ Tawasol is a real-time communication tool designed to bridge the gap between the
 
 ### 🚀 My Contribution
 
-As the sole developer, I was responsible for all aspects of this project. A significant part of this work involved creating the dataset from scratch. I personally recorded and annotated the sign language gestures used to train the machine learning model, ensuring high-quality and relevant data for the specific use case of this application. The gesture recognition model was also trained and fine-tuned by me.
+In this project, I spearheaded the development of the core backend infrastructure and the integration of the machine learning components. My key contributions include:
+
+-   **Backend Development:** Designing and implementing the Flask application's backend logic, API endpoints, and database interactions.
+-   **Dataset Creation:** Personally collecting and annotating the Arabic sign language gestures to build a robust dataset tailored for this application.
+-   **Model Development & Training:** Developing, training, and fine-tuning the machine learning models for real-time gesture recognition.
+
+This comprehensive involvement ensures the project's robust functionality from data to deployment-ready backend.
 
 ---
 
