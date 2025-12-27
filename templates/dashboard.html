@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - تواصل</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #F2FBFC; /* ✅ exact color from your dashboard screenshot */
+    color: #222;
+    margin: 0;
+    padding: 0;
+}
+
+
+        .header {
+            background-color: #1654B7;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #FFD700;
+        }
+
+        .container {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2d50ff;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: block;
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #7b5cff;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            background-color: #5c47cc;
+            transform: translateY(-5px);
+        }
+
+        .logo-centered {
+            margin: 30px 0;
+            animation: pulse 3s infinite;
+        }
+
+        .logo-centered img {
+            height: 300px;
+            width: auto;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .footer {
+            background: linear-gradient(to right, #1654B7, #6b49ff);
+            color: white;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 50px;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 2rem; }
+            .button { width: 80%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="logo">
+            <img src="/static/Tawasol.png" alt="Tawasol Logo">
+            <span class="logo-text">تواصل</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="/">الرئيسية</a></li>
+            <li><a href="/dashboard">لوحة التحكم</a></li>
+            <li><a href="/settings">إعدادات</a></li>
+            <li><a href="/logout">تسجيل الخروج</a></li>
+        </ul>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="logo-centered">
+            <img src="/static/Main.png" alt="Tawasol Logo">
+        </div>
+        <div class="title">مرحباً بك في لوحة التحكم</div>
+        
+        <!-- Action Buttons -->
+        <a href="/users" class="button">إدارة العاملين في الرعاية الصحية</a>
+        <a href="/add_employee" class="button">إضافة موظف جديد</a>
+        <a href="/settings" class="button">إعدادات النظام</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">حقوق النشر © ٢٠٢٤. جميع الحقوق محفوظة.</div>
+</body>
+</html>

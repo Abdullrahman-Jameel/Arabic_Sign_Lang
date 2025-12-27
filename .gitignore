@@ -1,0 +1,35 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Conda environment
+.conda/
+
+# VS Code specific
+.vscode/
+
+# Instance folder (contains the database)
+instance/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Large model files (should be hosted elsewhere)
+*.h5
+tawasol-app.tar
+
+# Unused scripts and assets we identified
+check.py
+NewPass.py
+num.py
+oldtest1.py
+models/keras_model_21num.h5
+models/labels_21num.txt
+static/WhatsApp Image*.jpeg
+static/WhatsApp Unknown*.zip
+mediapipe-*.whl
+
+# Log files
+*.log

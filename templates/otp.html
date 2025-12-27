@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رمز المصادقة الثنائية</title>
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+        body{
+            background:#F2FBFC;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            padding:1rem;
+        }
+        .auth-container{
+            background:#F2FBFC;
+            padding:2rem;
+            border-radius:10px;
+            box-shadow:0 4px 10px rgba(0,0,0,.1);
+            max-width:400px;width:100%;
+        }
+        img.logo{width:120px;margin-bottom:1rem}
+        h1{color:#7241DA;font-size:3rem;margin-bottom:1.5rem;font-family:'Times New Roman',Times,serif}
+        .code-group{margin-bottom:1.5rem}
+        .code-group label{display:block;font-size:1rem;color:#1654B7;margin-bottom:.5rem;font-weight:bold}
+        .code-group input{
+            width:100%;padding:.8rem;border:1px solid #ccc;border-radius:5px;
+            font-size:1.2rem;text-align:center;direction:ltr
+        }
+        .error-message{color:red;font-size:.9rem;margin-top:.5rem}
+        .verify-btn{
+            background:#2BB3F9;color:#fff;padding:1rem;border:none;border-radius:5px;
+            font-size:1.2rem;cursor:pointer;width:100%;transition:background .3s;
+        }
+        .verify-btn:hover{background:#1654B7}
+        .resend-link{margin-top:1rem;font-size:.9rem;color:#1654B7;text-decoration:none;display:block}
+        .resend-link:hover{text-decoration:underline}
+        @media(max-width:768px){
+            h1{font-size:1.5rem}
+            .auth-container{padding:1.5rem}
+            .code-group input{padding:.7rem}
+            .verify-btn{font-size:1rem}
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- logo on top -->
+        <img class="logo" src="{{ url_for('static', filename='Tawasol.png') }}" alt="Tawasol">
+
+        <h1>رمز المصادقة الثنائية</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, msg in messages %}
+              <p class="error-message">{{ msg }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('verify_otp') }}">
+            <div class="code-group">
+                <label for="otp">أدخل رمز المصادقة الثنائية:</label>
+                <input type="text"
+                       id="otp"
+                       name="otp"
+                       maxlength="4"
+                       autocomplete="one-time-code"
+                       required>
+            </div>
+
+            <button type="submit" class="verify-btn">تحقّق</button>
+        </form>
+
+        <a href="{{ url_for('login') }}" class="resend-link">إعادة إرسال الرمز</a>
+    </div>
+</body>
+</html>

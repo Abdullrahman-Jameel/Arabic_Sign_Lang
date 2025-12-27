@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>إضافة مريض جديد</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
+    body{background:#F2FBFC;color:#222;display:flex;flex-direction:column;min-height:100vh}
+    .navbar{width:100%;background:#1654B7;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:20px 40px}
+    .navbar img{height:45px;width:45px;border-radius:50%}
+    .container{width:100%;max-width:1000px;margin:1rem auto;text-align:center}
+    .main-title{font-size:2.4rem;color:#1654B7;margin-bottom:1rem;font-weight:bold}
+    .model-buttons{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem}
+    .model-btn{padding:.5rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-weight:bold;transition:background .3s}
+    .active-btn{background:#1654B7;color:#fff}
+    .inactive-btn{background:#e0e0e0;color:#000}
+    .translation-box{max-width:1000px;margin:0 auto 1rem;text-align:center}
+    .translation-output{min-height:60px;padding:1rem;background:#eaf8fd;border:1px solid #ccc;border-radius:5px;color:#333;white-space:pre-wrap;word-break:break-word}
+    .form-section{max-width:800px;margin:0 auto 2rem;background:#fff;padding:1.5rem;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,.1);text-align:right}
+    .form-section label{display:block;margin:.8rem 0 .3rem;font-weight:bold}
+    .form-section input[type="text"], .form-section input[type="email"]{width:100%;padding:.7rem;border:1px solid #ccc;border-radius:5px}
+    .gender-options{display:flex;gap:1rem;margin:.5rem 0 1rem}
+    .gender-options label{display:flex;align-items:center;cursor:pointer;color:#1654B7}
+    .submit-btn{width:100%;margin-top:1rem;padding:.8rem;background:#2BB3F9;color:#fff;border:none;border-radius:10px;font-size:1.2rem;cursor:pointer}
+    .submit-btn:hover{background:#1654B7}
+    .footer{margin-top:auto;width:100%;padding:1rem;text-align:center;color:#fff;background:linear-gradient(to right,#1654B7,#6b49ff)}
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <img src="/static/Tawasol.png" alt="Logo">
+      <span style="font-weight:bold;font-size:1.2rem">تواصل</span>
+    </div>
+    <div style="font-weight:bold;font-size:1.2rem">إضافة فرد جديد</div>
+  </div>
+
+  <div class="container">
+    <h1 class="main-title">انت اشر وإحنا نفهمك</h1>
+
+    <!-- MODEL SWITCH + LAUNCH TEST1.PY BUTTON -->
+    <div class="model-buttons">
+      <button id="btnAlpha" class="model-btn active-btn">كلام</button>
+      <button id="btnNum"   class="model-btn inactive-btn">أرقام</button>
+      <button id="btnCam"   class="model-btn inactive-btn">تشغيل الكاميرا</button>
+    </div>
+
+    <div class="translation-box">
+      <label>النص الناتج عن المريض:</label>
+      <div class="translation-output" id="translatedText"></div>
+    </div>
+
+    <div class="form-section">
+      <form id="patientForm" method="POST">
+        <label for="full_name">اسم المريض الكامل:</label>
+        <input type="text" id="full_name" name="full_name" required>
+
+        <label for="email">البريد الإلكتروني:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">رقم الهاتف:</label>
+        <input type="text" id="phone" name="phone" required>
+
+        <label for="id_number">رقم الهوية:</label>
+        <input type="text" id="id_number" name="id_number" required>
+
+        <label>الجنس:</label>
+        <div class="gender-options">
+          <label><input type="radio" name="gender" value="ذكر" required> ذكر</label>
+          <label><input type="radio" name="gender" value="أنثى" required> أنثى</label>
+        </div>
+
+        <!-- hidden fields -->
+        <input type="hidden" name="prediction" id="predictionInput">
+        <input type="hidden" name="log"        id="logInput">
+
+        <button type="submit" class="submit-btn">حفظ</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer">جميع الحقوق محفوظة © ٢٠٢٤</div>
+
+  <script>
+    const btnA  = document.getElementById("btnAlpha");
+    const btnN  = document.getElementById("btnNum");
+    const btnC  = document.getElementById("btnCam");
+    const out   = document.getElementById("translatedText");
+    const pred  = document.getElementById("predictionInput");
+    const log   = document.getElementById("logInput");
+
+    let logArr     = [];      // all collected labels
+    let lastWord   = '';      // for debounce
+    let lastTime   = 0;       // ms
+    let polling    = null;
+    let currentModel = "alpha";
+
+    // UI button handlers
+    btnA.onclick = () => {
+      currentModel = "alpha";
+      btnA.classList.add("active-btn");  btnA.classList.remove("inactive-btn");
+      btnN.classList.add("inactive-btn");btnN.classList.remove("active-btn");
+    };
+    btnN.onclick = () => {
+      currentModel = "num";
+      btnN.classList.add("active-btn");  btnN.classList.remove("inactive-btn");
+      btnA.classList.add("inactive-btn");btnA.classList.remove("active-btn");
+    };
+
+    // Launch test1.py and start polling for stdout labels
+    btnC.onclick = async () => {
+      try {
+        const res = await fetch("/run_test", { method: "POST" });
+        if (!res.ok) throw new Error("launch failed");
+
+        if (!polling) {
+          polling = setInterval(async () => {
+            try {
+              const r = await fetch("/current_label");
+              const j = await r.json();
+              out.innerText = j.label;
+              pred.value    = j.label;
+
+              /* ─── 1-second debounce ─── */
+              const now = Date.now();
+              if (j.label && (j.label !== lastWord || now - lastTime > 1000)) {
+                logArr.push(j.label);
+                log.value = logArr.join("|");   // pipe-separated
+                lastWord  = j.label;
+                lastTime  = now;
+              }
+            } catch(e) {
+              console.error(e);
+            }
+          }, 500);
+        }
+
+      } catch (e) {
+        console.error(e);
+        alert("فشل تشغيل الكاميرا الخارجية");
+      }
+    };
+  </script>
+</body>
+</html>

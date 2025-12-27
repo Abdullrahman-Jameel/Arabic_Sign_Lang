@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>المعلومات الشخصية</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* ——————————————— Your original CSS ——————————————— */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Tajawal',sans-serif; }
+    body { min-height:100vh; display:flex; flex-direction:column; background:#F2FBFC; color:#333; }
+    .navbar { width:100%; background-color:#1654B7; display:flex;
+               justify-content:space-between; align-items:center;
+               padding:20px 40px; height:70px; }
+    .navbar .right-group { display:flex; align-items:center; gap:10px; }
+    .navbar .right-group img { height:45px; width:45px; border-radius:50%; }
+    .navbar .right-group span { color:white; font-weight:bold; font-size:1.2rem; }
+    .navbar .left-text { color:white; font-weight:bold; font-size:1.2rem; }
+    /* — only this line changed — */
+    .container { width:100%; max-width:1100px; margin:0 auto; text-align:center;
+                  padding:1rem; }         /* now has id="capture-area" */
+    .patient-info { display:flex; flex-wrap:wrap; justify-content:center;
+                     gap:1rem; margin:1.5rem 0; }
+    .info-box { background-color:#F2FBFC; border-radius:10px;
+                box-shadow:0 2px 6px rgba(0,0,0,0.1);
+                min-width:140px; padding:1rem; text-align:center; }
+    .info-title { font-weight:bold; color:#333; margin-bottom:0.4rem; }
+    .info-value { font-size:1rem; color:#555; }
+    .conversation-section-title { font-size:1.2rem; color:#333;
+                                   font-weight:bold; margin-bottom:1rem; }
+    .conversation-box { width:100%; max-width:800px; margin:0.5rem auto 1rem;
+                        background-color:#fff; border-radius:10px; padding:1.5rem;
+                        box-shadow:0 2px 6px rgba(0,0,0,0.1);
+                        font-size:1.2rem; color:#333; line-height:1.6;
+                        text-align:center; }
+    .action-button { background-color:#6b49ff; color:#fff; border:none;
+                     padding:0.8rem 2rem; border-radius:8px; font-size:1.2rem;
+                     cursor:pointer; transition:background-color 0.3s;
+                     margin-top:1rem; margin-bottom:2rem;
+                     text-decoration:none; display:inline-block; }
+    .action-button:hover { background-color:#1654B7; }
+    .footer { width:100%; text-align:center; color:#fff;
+              background:linear-gradient(to right,#1654B7,#6b49ff);
+              padding:1rem; margin-top:auto; }
+    /* —————————————————————————————————————————————————————————— */
+  </style>
+</head>
+<body>
+
+  <!-- Navbar (unchanged) -->
+  <div class="navbar">
+    <div class="right-group">
+      <img src="/static/Tawasol.png" alt="Logo">
+      <span>تواصل</span>
+    </div>
+    <div class="left-text">المعلومات الشخصية</div>
+  </div>
+
+  <!-- Main Container (now has id="capture-area") -->
+  <div class="container" id="capture-area">
+
+    <!-- Patient Info (unchanged) -->
+    <div class="patient-info">
+      <div class="info-box">
+        <div class="info-title">اسم المريض</div>
+        <div class="info-value">{{ patient.full_name }}</div>
+      </div>
+      <div class="info-box">
+        <div class="info-title">رقم الهوية</div>
+        <div class="info-value">{{ patient.id_number }}</div>
+      </div>
+      <div class="info-box">
+        <div class="info-title">الجنس</div>
+        <div class="info-value">{{ patient.gender }}</div>
+      </div>
+      <div class="info-box">
+        <div class="info-title">رقم الهاتف</div>
+        <div class="info-value">{{ patient.phone }}</div>
+      </div>
+      <div class="info-box">
+        <div class="info-title">البريد الإلكتروني</div>
+        <div class="info-value">{{ patient.email }}</div>
+      </div>
+    </div>
+
+    <!-- Conversation Section Title & Items (unchanged) -->
+    <div class="conversation-section-title">
+      المحادثة المترجمة للمريض التالي
+    </div>
+    {% for convo in patient.conversations %}
+      <div class="conversation-box">{{ convo.text }}</div>
+    {% else %}
+      <div class="conversation-box">
+        لا توجد محادثة مسجلة لهذا المريض حتى الآن.
+      </div>
+    {% endfor %}
+
+    <!-- PDF Download Button – now a real <button> with id="export-pdf" -->
+    <button type="button" class="action-button" id="export-pdf">
+      تصوير الملف
+    </button>
+  </div>
+
+  <!-- Footer (unchanged) -->
+  <div class="footer">
+    جميع الحقوق محفوظة © ٢٠٢٤
+  </div>
+
+  <!-- html2canvas & jsPDF (exactly from your individuals_list.html) :contentReference[oaicite:1]{index=1} -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+          crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("export-pdf")
+        .addEventListener("click", async () => {
+          const element = document.getElementById("capture-area");
+          if (!element) {
+            console.error("Capture area not found");
+            return;
+          }
+          try {
+            const canvas = await html2canvas(element, {
+              useCORS: true,
+              scale: 2
+            });
+            const imgData = canvas.toDataURL("image/png");
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF("p", "mm", "a4");
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+            pdf.addImage(imgData, "PNG", 0, 10, pdfWidth, imgHeight);
+            pdf.save(`patient_{{ patient.id }}.pdf`);
+          } catch (error) {
+            console.error("Export failed", error);
+          }
+        });
+    });
+  </script>
+
+</body>
+</html>

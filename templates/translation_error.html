@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تواصل - المترجم</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f8ff;
+            color: #f00707;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #ffffff;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ddd;
+        }
+        .header a {
+            text-decoration: none;
+            color: #1654B7;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .container {
+            padding: 20px;
+        }
+        .video-container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        video {
+            width: 100%;
+            display: block;
+        }
+        .translated-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1654B7;
+            margin-top: 20px;
+        }
+        .translated-message {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: 20px auto;
+        }
+        @media (max-width: 768px) {
+    .container {
+        width: 100vw; 
+        height: auto;
+    }
+}
+        .save-button {
+            background-color: #6b49ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: auto;
+        }
+        .footer {
+            background: linear-gradient(to right, #1654B7, #6b49ff);
+            color: white;
+            padding: 20px;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            position: fixed; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="#">المترجم</a>
+        <a href="#">تواصل</a>
+    </div>
+    <div class="container">
+        <div class="video-container">
+            <video id="cameraFeed" autoplay></video>
+        </div>
+        <div class="translated-text">أشعر بألم في مفصلي الأيسر</div>
+        <div class="translated-message">
+            <p><strong> النظام لم يتعرف على المعطيات الرجاءاعاده المحاولة مره اخرى</strong></p>
+
+            
+           
+        </div>
+        <button class="save-button">حفظ</button>
+    </div>
+    <div class="footer">حقوق النشر © ٢٠٢٤. جميع الحقوق محفوظة.</div>
+    <script>
+        async function startCamera() {
+            const video = document.getElementById("cameraFeed");
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error("خطأ في الوصول إلى الكاميرا", err);
+            }
+        }
+        window.onload = startCamera;
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>مريض مسجَّل</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* condensed CSS – same look as add_patient.html */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
+    body{background:#F2FBFC;color:#222;display:flex;flex-direction:column;min-height:100vh}
+    .navbar{width:100%;background:#1654B7;display:flex;justify-content:space-between;align-items:center;padding:20px 40px}
+    .navbar img{height:45px;width:45px;border-radius:50%}
+    .container{width:100%;max-width:1000px;margin:1rem auto;text-align:center}
+    .main-title{font-size:2.2rem;color:#1654B7;margin-bottom:.7rem;font-weight:bold}
+    .model-buttons{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem}
+    .model-btn{padding:.5rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-weight:bold}
+    .active-btn{background:#1654B7;color:#fff}.inactive-btn{background:#e0e0e0;color:#000}
+    .translation-box{max-width:1000px;margin:0 auto 1rem}
+    .translation-output{min-height:60px;padding:1rem;background:#eaf8fd;border:1px solid #ccc;border-radius:5px;text-align:right}
+    .form-section{max-width:800px;margin:0 auto 2rem;background:#fff;padding:1.5rem;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,.1);text-align:right}
+    .form-section label{display:block;margin:.8rem 0 .3rem;font-weight:bold}
+    .form-section input{width:100%;padding:.7rem;border:1px solid #ccc;border-radius:5px}
+    .save-btn{width:100%;margin-top:1rem;padding:.8rem;background:#6b49ff;color:#fff;border:none;border-radius:10px;font-size:1.2rem;cursor:pointer}
+    .save-btn:hover{background:#1654B7}
+    .footer{margin-top:auto;width:100%;padding:1rem;text-align:center;color:#fff;background:linear-gradient(to right,#1654B7,#6b49ff)}
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <img src="/static/Tawasol.png" alt="Logo"><span style="color:#fff;font-weight:bold">تواصل</span>
+    </div>
+    <div style="color:#fff;font-weight:bold">مريض مسجل</div>
+  </div>
+
+  <div class="container">
+    <h1 class="main-title">انت اشر وإحنا نفهمك</h1>
+
+    <!-- Buttons -->
+    <div class="model-buttons">
+      <button id="btnAlpha" class="model-btn active-btn">كلام</button>
+      <button id="btnNum"   class="model-btn inactive-btn">أرقام</button>
+      <button id="btnCam"   class="model-btn inactive-btn">تشغيل الكاميرا</button>
+    </div>
+
+    <!-- Live translation -->
+    <div class="translation-box">
+      <label>النص الناتج عن المريض:</label>
+      <div class="translation-output" id="translatedText"></div>
+    </div>
+
+    <!-- Submit only patient ID -->
+    <div class="form-section">
+      <form method="POST">
+        <label for="id_number">رقم الهوية:</label>
+        <input type="text" id="id_number" name="id_number" required>
+
+        <!-- hidden fields -->
+        <input type="hidden" name="prediction" id="predictionInput">
+        <input type="hidden" name="log"        id="logInput">
+
+        <button type="submit" class="save-btn">حفظ</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer">جميع الحقوق محفوظة © ٢٠٢٤</div>
+
+  <script>
+    const btnA  = document.getElementById("btnAlpha");
+    const btnN  = document.getElementById("btnNum");
+    const btnC  = document.getElementById("btnCam");
+    const out   = document.getElementById("translatedText");
+    const pred  = document.getElementById("predictionInput");
+    const log   = document.getElementById("logInput");
+
+    let logArr=[], lastWord='', lastTime=0, polling=null;
+
+    btnA.onclick = () => {btnA.classList.add("active-btn");btnA.classList.remove("inactive-btn");btnN.classList.add("inactive-btn");btnN.classList.remove("active-btn");};
+    btnN.onclick = () => {btnN.classList.add("active-btn");btnN.classList.remove("inactive-btn");btnA.classList.add("inactive-btn");btnA.classList.remove("active-btn");};
+
+    btnC.onclick = async () => {
+      if (!polling) {
+        const ok = await fetch("/run_test",{method:"POST"}).then(r=>r.ok);
+        if(!ok){alert("فشل تشغيل الكاميرا");return;}
+        polling=setInterval(async()=>{
+          const j = await fetch("/current_label").then(r=>r.json());
+          out.innerText=j.label; pred.value=j.label;
+          const now=Date.now();
+          if(j.label&&(j.label!==lastWord||now-lastTime>1000)){
+            logArr.push(j.label); log.value=logArr.join("|");
+            lastWord=j.label; lastTime=now;
+          }
+        },500);
+      }
+    };
+  </script>
+</body>
+</html>

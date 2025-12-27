@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إدارة المستخدمين</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: #F2FBFC;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      width: 100%;
+      background-color: #1654B7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      height: 70px;
+    }
+
+    .navbar .right-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar .right-group img {
+      height: 45px;
+      width: 45px;
+      border-radius: 50%;
+    }
+
+    .navbar .right-group span {
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .navbar .left-text {
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .container {
+      width: 80%;
+      margin: 2rem auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      text-align: right;
+    }
+
+    h2 {
+      color: #7241DA;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #2BB3F9;
+      color: white;
+    }
+
+    .delete-btn {
+      padding: 6px 12px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 5px;
+      transition: background 0.3s;
+    }
+
+    .delete-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .edit-btn {
+      padding: 6px 12px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 5px;
+      transition: background 0.3s;
+    }
+
+    .edit-btn:hover {
+      background-color: #218c53;
+    }
+
+    .dashboard-btn {
+      display: block;
+      margin: 30px auto 20px auto;
+      background-color: #7241DA;
+      color: white;
+      text-decoration: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      text-align: center;
+      width: fit-content;
+      transition: background-color 0.3s;
+    }
+
+    .dashboard-btn:hover {
+      background-color: #5a30b5;
+    }
+
+    .footer {
+      width: 100%;
+      padding: 1rem;
+      text-align: center;
+      color: white;
+      background: linear-gradient(to right, #1654B7, #6b49ff);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="right-group">
+      <img src="/static/Tawasol.png" alt="Logo">
+      <span>تواصل</span>
+    </div>
+    <div class="left-text">إدارة المستخدمين</div>
+  </div>
+
+  <div class="container">
+    <h2></h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>الاسم الكامل</th>
+          <th>البريد الإلكتروني</th>
+          <th>الهاتف</th>
+          <th>الدور</th>
+          <th>الجنس</th>
+          <th>الإجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.full_name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.gender }}</td>
+          <td>
+            <form action="/delete_user/{{ user.id }}" method="post" onsubmit="return confirm('هل أنت متأكد من حذف هذا المستخدم؟');" style="display:inline;">
+              <button type="submit" class="delete-btn">🗑️ حذف</button>
+            </form>
+            <button onclick="window.location.href='/edit_user/{{ user.id }}'" class="edit-btn">✏️ تعديل</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="/dashboard" class="dashboard-btn">العودة إلى لوحة التحكم</a>
+  </div>
+
+  <div class="footer">
+    <p>جميع الحقوق محفوظة © ٢٠٢٤</p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة موظف جديد</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #F2FBFC;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin: 30px auto;
+            width: 40%;
+            background-color: #fff;
+            border-radius: 10px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: right;
+            overflow: hidden;
+        }
+
+        h2 {
+            color: #7241DA;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        input, select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218c53;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #777;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>إضافة موظف جديد</h2>
+        <form method="post">
+            <label for="full_name">اسم الموظف الكامل:</label>
+            <input type="text" id="full_name" name="full_name" required>
+
+            <label for="email">البريد الإلكتروني:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">رقم هاتف الموظف:</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <label for="role">الدور:</label>
+            <select id="role" name="role" required>
+                <option value="" disabled selected>اختر الدور</option>
+                <option value="admin">admin</option>
+                <option value="employee">employee</option>
+            </select>
+
+            <label for="gender">الجنس:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>اختر الجنس</option>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+
+            <label for="password">كلمة المرور:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">إضافة الموظف</button>
+        </form>
+        
+        <!-- New redirect button similar in style to the form button -->
+        <button type="button" onclick="window.location.href='/dashboard'">عودة إلى لوحة التحكم</button>
+
+        <div class="footer">
+            &copy; 2024 جميع الحقوق محفوظة لـ تواصل
+        </div>
+    </div>
+
+</body>
+</html>
