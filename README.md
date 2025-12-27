@@ -4,8 +4,6 @@
 [![Flask](https://img.shields.io/badge/Flask-2.x-black.svg)](https://flask.palletsprojects.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-*Senior Note: A great way to make this README even better is to record a short GIF of the application running and add it here. You can use free tools like [ScreenToGif](https://www.screentogif.com/) or [LICEcap](https://www.cockos.com/licecap/) to capture your screen.*
-https://github-production-user-asset-6210df.s3.amazonaws.com/175829147/530464773-f1db859a-cc0b-4d4c-aac2-f0aedc294fd6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20251227%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20251227T090053Z&X-Amz-Expires=300&X-Amz-Signature=0b6d89b24e0f6822f5b332c4d6d15830a0e7fc5ca63f976c609c4eef33355aa0&X-Amz-SignedHeaders=host
 
 ![Project Demo](https://github.com/user-attachments/assets/716a36e7-d834-447d-b86c-b40c631a0735)
 
