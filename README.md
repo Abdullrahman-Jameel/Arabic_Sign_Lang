@@ -13,11 +13,13 @@ Tawasol is a real-time communication tool designed to bridge the gap between the
 
 ### ✨ Key Features
 
--   **Real-Time Translation:** Utilizes a webcam to capture hand gestures and translates them into Arabic text instantly.
--   **User & Patient Management:** A comprehensive web interface for administrators to manage users (employees) and patients.
--   **Conversation Logging:** Securely logs translated conversations for each patient, providing a history for review.
--   **PDF Export:** Allows for the exporting of patient conversation logs into a PDF format for official records.
--   **Admin Dashboard:** A dedicated dashboard for administrators to manage the application's users and data.
+| Feature                   | Description                                                                                               | Screenshot                                                                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Real-Time Translation** | Utilizes a webcam to capture hand gestures and translates them into Arabic text instantly.                | ![Real-Time Translation](https://github.com/user-attachments/assets/3a974340-f36d-4ba8-ba83-2398201aba8c)                                   |
+| **User & Patient Management** | A comprehensive web interface for administrators to manage users (employees) and patients.              | ![User & Patient Management](https://github.com/user-attachments/assets/53d9740f-1404-4377-ab49-971f081db76a) |
+| **Admin Dashboard**       | A dedicated dashboard for administrators to manage the application's users and data.                      | ![Admin Dashboard](https://github.com/user-attachments/assets/2ff74c28-93fe-4c0a-b84a-f11097a551ef)                                       |
+| **Conversation Logging**  | Securely logs translated conversations for each patient, providing a history for review.                  | *Image to be added*                                                                                                                         |
+| **PDF Export**            | Allows for the exporting of patient conversation logs into a PDF format for official records. | *Image to be added*                                                                                                                         |
 
 ---
 
